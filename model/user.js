@@ -1,4 +1,5 @@
 import pkg from 'mongoose';
+import bcrypt from 'bcryptjs/dist/bcrypt';
 
 const { Schema, model } = pkg;
 
@@ -20,7 +21,13 @@ const userSchema = new Schema(
         token: {
             type: String,
             default: null,
-        }
+        },
+        subscription: {
+            type: String,
+            enum: ["starter", "pro", "business"],
+            default: "starter"
+        },
+
     },
     {
         versionKey: false,
@@ -40,6 +47,14 @@ const userSchema = new Schema(
         },
     },
 );
+
+userSchema.pre('save', async function (next) {
+    if (this.isModified('password')) {
+        const salt = bcrypt.genSalt(11);
+        this.password = bcrypt.hash(this.password, salt);
+    }
+    next()
+})
 
 const User = model('user', userSchema);
 export default User;
