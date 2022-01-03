@@ -12,13 +12,13 @@ const registration = async (req, res, next) => {
     if (isUserExist) {
         return res
             .status(HttpCode.CONFLICT)
-            .json({ status: 'error', code: HttpCode.CONFLICT, message: 'Email in use' });
+            .json({ message: 'Email in use' });
     };
 
     const data = await authService.create(req.body)
     res
         .status(HttpCode.CREATED)
-        .json({ status: 'success', code: HttpCode.CREATED, data });
+        .json({ data });
 };
 
 
@@ -29,13 +29,24 @@ const login = async (req, res, next) => {
     if (!user) {
         return res
             .status(HttpCode.UNAUTHORIZED)
-            .json({ status: 'error', code: HttpCode.UNAUTHORIZED, message: 'Invalid login or password' });
+            .json({ message: 'Email or password is wrong' });
     };
 
+
     const token = await authService.getToken(user);
+    await authService.setToken(user.id, token);
+
+    const response = {
+        "token": token,
+        "user": {
+            "email": user.email,
+            "subscription": user.subscription
+        }
+    }
+
     res
         .status(HttpCode.OK)
-        .json({ token });
+        .json(response);
 };
 
 const logout = async (req, res, next) => {
