@@ -12,13 +12,13 @@ const registration = async (req, res, next) => {
     if (isUserExist) {
         return res
             .status(HttpCode.CONFLICT)
-            .json({ status: 'error', code: HttpCode.CONFLICT, message: 'Such email already exists' });
+            .json({ status: 'error', code: HttpCode.CONFLICT, message: 'Email in use' });
     };
 
     const data = await authService.create(req.body)
     res
-        .status(HttpCode.OK)
-        .json({ status: 'success', code: HttpCode.OK, data });
+        .status(HttpCode.CREATED)
+        .json({ status: 'success', code: HttpCode.CREATED, data });
 };
 
 
@@ -35,7 +35,7 @@ const login = async (req, res, next) => {
     const token = await authService.getToken(user);
     res
         .status(HttpCode.OK)
-        .json({ status: 'success', code: HttpCode.OK, data: { token } });
+        .json({ token });
 };
 
 const logout = async (req, res, next) => {
