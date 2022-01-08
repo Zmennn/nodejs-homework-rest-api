@@ -43,16 +43,27 @@ const login = async (req, res, next) => {
             "subscription": user.subscription
         }
     }
-
     res
         .status(HttpCode.OK)
         .json(response);
 };
 
-const logout = async (req, res, next) => {
 
+const logout = async (req, res, next) => {
+    await authService.setToken(req.user.id, null);
+    res
+        .status(HttpCode.NO_CONTENT)
+        .json();
+};
+
+const current = async (req, res, next) => {
+    const response = await {
+
+        "email": req.user.email,
+        "subscription": req.user.subscription
+    }
     res
         .status(HttpCode.OK)
-        .json({ status: 'success', code: HttpCode.OK, data: contacts });
-};
-export { registration, login, logout }
+        .json(response)
+}
+export { registration, login, logout, current }

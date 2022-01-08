@@ -21,8 +21,16 @@ const guard = async (req, res, next) => {
         return res
             .status(HttpCode.UNAUTHORIZED)
             .json({ message: "Not authorized" });
-    }
+    };
 
+    const payload = jwt.decode(token);
+    const user = await Users.findById(payload.id)
+    if (!user || user.token != token) {
+        return res
+            .status(HttpCode.UNAUTHORIZED)
+            .json({ message: "Not authorized" });
+    };
+    req.user = user;
     next()
 };
 
