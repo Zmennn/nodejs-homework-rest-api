@@ -1,6 +1,7 @@
 import express from 'express';
 import logger from 'morgan';
 import cors from 'cors';
+
 import { HttpCode } from './lib/constants.js';
 
 import contactsRouter from './routes/api/contacts';
@@ -9,6 +10,7 @@ import authRouter from './routes/api/auth';
 const app = express();
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
+
 
 app.use(express.static('public'));
 app.use(logger(formatsLogger));

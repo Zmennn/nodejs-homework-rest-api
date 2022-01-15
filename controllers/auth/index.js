@@ -65,5 +65,17 @@ const current = async (req, res, next) => {
     res
         .status(HttpCode.OK)
         .json(response)
-}
-export { registration, login, logout, current }
+};
+
+const uploadAvatar = async (req, res, next) => {
+    const response = await
+
+
+        { "avatarURL": req.user.subscription }
+
+    res
+        .status(HttpCode.OK)
+        .json(response)
+};
+
+export { registration, login, logout, current, uploadAvatar }
