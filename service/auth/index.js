@@ -12,8 +12,8 @@ class AuthService {
     };
 
     async create(body) {
-        const { email, subscription, avatar } = await Users.create(body);
-        return { email, subscription, avatar }
+        const { email, subscription, avatarURL } = await Users.create(body);
+        return { email, subscription, avatarURL }
     };
 
     async getUser(email, password) {
