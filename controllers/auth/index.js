@@ -1,6 +1,10 @@
 import { HttpCode } from '../../lib/constants.js';
-import AuthService from '../../service/auth';
+import { AuthService } from '../../service/auth';
 
+import {
+    UploadFileService,
+    LocalFileStorage
+} from '../../service/files-load'
 
 const authService = new AuthService();
 
@@ -68,14 +72,17 @@ const current = async (req, res, next) => {
 };
 
 const uploadAvatar = async (req, res, next) => {
-    const response = await
+    const uploadService = new UploadFileService(
+        LocalFileStorage,
+        req.file,
+        req.user
+    );
 
-
-        { "avatarURL": req.user.subscription }
+    const avatarUrl = await uploadService.updateAvatar();
 
     res
         .status(HttpCode.OK)
-        .json(response)
+        .json(avatarUrl)
 };
 
 export { registration, login, logout, current, uploadAvatar }

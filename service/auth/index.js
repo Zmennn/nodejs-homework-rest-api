@@ -4,7 +4,7 @@ import Users from '../../repository/users';
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 
-class AuthService {
+export class AuthService {
 
     async isUserExist(email) {
         const user = await Users.findByEmail(email);
@@ -42,4 +42,3 @@ class AuthService {
 }
 
 
-export default AuthService
