@@ -7,7 +7,7 @@ class LocalStorage {
         this.userId = user.id
         this.filename = file.filename
         this.filePath = file.path
-        this.folderAvatars = 'avatars'
+        this.folderAvatars = 'public/avatars'
     }
 
     async save() {
