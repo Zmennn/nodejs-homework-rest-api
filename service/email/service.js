@@ -46,8 +46,8 @@ class EmailService {
         return mailGenerator.generate(email);
     };
 
-    async sendVerifyEmail(email, username, verifyToken) {
-        const emailBody = this.createEmailTemplate(username, verifyToken)
+    async sendVerifyEmail(email, verifyToken) {
+        const emailBody = this.createEmailTemplate(email, verifyToken)
         const msg = {
             to: email,
             subject: 'Verify email',
