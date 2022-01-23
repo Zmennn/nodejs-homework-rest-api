@@ -10,25 +10,30 @@ import {
 
 const authService = new AuthService();
 
-const registration = async (req, res, next) => {
 
+
+
+
+const registration = async (req, res, next) => {
     const { email } = req.body;
     const isUserExist = await authService.isUserExist(email);
-
     if (isUserExist) {
-        return res
-            .status(HttpCode.CONFLICT)
-            .json({ message: 'Email in use' });
-    };
+        return res.status(HttpCode.CONFLICT).json({
+            status: 'error',
+            code: HttpCode.CONFLICT,
+            message: 'Email in use',
+        });
+    }
 
     const data = await authService.create(req.body);
     const emailService = new EmailService(
         process.env.NODE_ENV,
         new SenderNodemailer(),
     );
-    const isSend = await emailService.sendVerifyEmail(
-        email,
 
+    const isSend = await emailService.sendVerifyEmail(
+
+        email,
         data.verificationToken,
     );
     delete data.verificationToken;
@@ -37,10 +42,8 @@ const registration = async (req, res, next) => {
         code: HttpCode.CREATED,
         user: { ...data, isVerifyEmailSended: isSend },
     });
-    res
-        .status(HttpCode.CREATED)
-        .json({ data });
 };
+
 
 
 const login = async (req, res, next) => {

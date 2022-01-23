@@ -1,6 +1,8 @@
 import pkg from 'mongoose';
 import bcrypt from 'bcryptjs';
 import gravatar from 'gravatar/lib/gravatar';
+import { uuid } from 'uuidv4';
+
 
 const { Schema, model } = pkg;
 
@@ -44,8 +46,7 @@ const userSchema = new Schema(
             default: function () {
                 return uuid();
             },
-
-        }
+        },
     },
 
     {

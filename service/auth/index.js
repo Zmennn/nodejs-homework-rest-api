@@ -38,6 +38,18 @@ export class AuthService {
 
     async setToken(id, token) {
         await Users.updateToken(id, token);
+    };
+
+    async isUserWithToken(verificationToken) {
+        const user = await Users.findByToken(verificationToken);
+        return user;
+    };
+    async verify(userId) {
+        await Users.verify(userId);
+    };
+    async findByEmail(email) {
+        const user = await Users.findByEmail(email);
+        return user;
     }
 }
 
