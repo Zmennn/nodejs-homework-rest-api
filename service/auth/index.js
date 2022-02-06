@@ -12,14 +12,14 @@ export class AuthService {
     };
 
     async create(body) {
-        const { email, subscription, avatarURL } = await Users.create(body);
-        return { email, subscription, avatarURL }
+        const { email, subscription, avatarURL, verificationToken } = await Users.create(body);
+        return { email, subscription, avatarURL, verificationToken }
     };
 
     async getUser(email, password) {
         const user = await Users.findByEmail(email);
         const isValidPassword = await user?.isValidPassword(password)
-        if (!isValidPassword) {
+        if (!isValidPassword || user?.verify) {
             return null
         }
         return user
@@ -38,6 +38,18 @@ export class AuthService {
 
     async setToken(id, token) {
         await Users.updateToken(id, token);
+    };
+
+    async isUserWithToken(verificationToken) {
+        const user = await Users.findByToken(verificationToken);
+        return user;
+    };
+    async verify(userId) {
+        await Users.verify(userId);
+    };
+    async findByEmail(email) {
+        const user = await Users.findByEmail(email);
+        return user;
     }
 }
 

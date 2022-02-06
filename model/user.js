@@ -1,6 +1,8 @@
 import pkg from 'mongoose';
 import bcrypt from 'bcryptjs';
 import gravatar from 'gravatar/lib/gravatar';
+import { uuid } from 'uuidv4';
+
 
 const { Schema, model } = pkg;
 
@@ -34,8 +36,19 @@ const userSchema = new Schema(
                 return gravatar.url(this.email, { s: '250' }, true)
             },
         },
-
+        verify: {
+            type: Boolean,
+            default: false,
+        },
+        verificationToken: {
+            type: String,
+            required: [true, 'Verify token is required'],
+            default: function () {
+                return uuid();
+            },
+        },
     },
+
     {
         versionKey: false,
         toJSON: {
